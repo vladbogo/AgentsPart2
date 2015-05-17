@@ -17,20 +17,20 @@ public class RandomAgent extends Drawable {
 		this.m = m;
 		points = 0;
 		rand = new Random(42);
-		dir = Constants.left;
+		dir = Constants.LEFT;
 		scaleFactor = Constants.CANVAS_SIZE / m.n;
 	}
 
 	private Pair computePoz(Pair actualPoz, int dir) {
 		Pair p = null;
 
-		if (dir == Constants.up) {
+		if (dir == Constants.UP) {
 			p = new Pair(actualPoz.getI() - 1, actualPoz.getJ());
-		} else if (dir == Constants.down) {
+		} else if (dir == Constants.DOWN) {
 			p = new Pair(actualPoz.getI() + 1, actualPoz.getJ());
-		} else if (dir == Constants.left) {
+		} else if (dir == Constants.LEFT) {
 			p = new Pair(actualPoz.getI(), actualPoz.getJ() + 1);
-		} else if (dir == Constants.right) {
+		} else if (dir == Constants.RIGHT) {
 			p = new Pair(actualPoz.getI(), actualPoz.getJ() - 1);
 		}
 
@@ -48,7 +48,7 @@ public class RandomAgent extends Drawable {
 
 		if (m.hasObject(actualPoz)) {
 			m.pickUpObject(actualPoz);
-			points += Constants.objectPoints;
+			points += Constants.OBJECT_POINTS;
 		}
 		int newDir;
 
@@ -61,7 +61,7 @@ public class RandomAgent extends Drawable {
 
 		int val = Math.abs(dir - newDir) % 2;
 
-		points -= val * Constants.actionPoints;
+		points -= val * Constants.ACTION_POINTS;
 
 		agentPosition= newPoz;
 
@@ -71,12 +71,12 @@ public class RandomAgent extends Drawable {
 	}
 
 	public void start() {
-		while (m.numberOfObjects > 0) {
+		while (m.numberOfPiles > 0) {
 			System.out.println("Agent in pozitia: " + agentPosition
 					+ " cu puncte: " + points);
 			System.out.println(m);
 			try {
-				Thread.sleep(Constants.sleep);
+				Thread.sleep(Constants.SLEEP);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -90,7 +90,7 @@ public class RandomAgent extends Drawable {
 					+ " cu puncte: " + points);
 			System.out.println(m);
 			try {
-				Thread.sleep(Constants.sleep);
+				Thread.sleep(Constants.SLEEP);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
