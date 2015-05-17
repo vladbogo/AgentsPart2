@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -7,6 +8,7 @@ public class Main extends JPanel {
 
 	public static RandomAgent p;
 	public static World m;
+	public static Random rand;
 
 	public Main() {
 		Thread animationThread = new Thread() {
@@ -41,8 +43,8 @@ public class Main extends JPanel {
 	}
 
 	public static void init() {
-		m = new World(Constants.WORLD_SIZE);
-		p = new RandomAgent(m, new Pair(10, 10), 10, 1);
+		m = new World(Constants.WORLD_SIZE, rand);
+		p = new RandomAgent(m, 10, 1, rand);
 	}
 
 	public static void pause(int time) {
@@ -56,6 +58,8 @@ public class Main extends JPanel {
 
 	/** The entry main() method */
 	public static void main(String[] args) {
+		rand = new Random();
+		
 		init();
 
 		pause(100);

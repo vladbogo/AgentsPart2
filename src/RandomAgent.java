@@ -9,15 +9,15 @@ public class RandomAgent extends Drawable {
 	Random rand;
 	public int scaleFactor = 0;
 
-	public RandomAgent(World m, Pair initial_pos, int r, int range) {
+	public RandomAgent(World m, int r, int range, Random rand) {
 		// Call super constructor to init the drawable object.
-		super(initial_pos, r, range, m.n, Constants.RANDOM_BASE_COLOR,
+		super(m.basePosition, r, range, m.n, Constants.RANDOM_BASE_COLOR,
 				Constants.RANDOM_ARROW_COLOR, Constants.RANDOM_RANGE_COLOR);
 		// TODO random generate position.
-		this.agentPosition = new Pair(0, 0);
+		this.agentPosition = m.basePosition;
 		this.m = m;
 		points = 0;
-		rand = new Random(42);
+		this.rand = rand;
 		dir = Constants.LEFT;
 
 	}

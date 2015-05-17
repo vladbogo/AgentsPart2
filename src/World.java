@@ -10,6 +10,8 @@ public class World {
 	public int n;
 	// World matrix.
 	public int[][] world;
+	// Base position.
+	public Pair basePosition;
 	// Number of piles.
 	public int numberOfPiles;
 	private Random rand;
@@ -20,17 +22,19 @@ public class World {
 	 * @param n
 	 *            World dimension
 	 */
-	public World(int n) {
+	public World(int n, Random rand) {
 		this.n = n;
-		rand = new Random(42);
+		this.rand = rand;
 		numberOfPiles = 0;
+		basePosition = new Pair(rand.nextInt(n), rand.nextInt(n));
 
 		world = new int[n][n];
+		world[basePosition.getI()][basePosition.getJ()] = Constants.BASE;
 		genWorld();
 	}
 
 	private int getRand(int nr) {
-		return rand.nextInt(100000) % nr;
+		return rand.nextInt(nr);
 	}
 
 	/**
@@ -64,18 +68,19 @@ public class World {
 	private void genWorld() {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
-				world[i][j] = 0;
-				if (i == 0 && j == 0) {
-					world[i][j] = Constants.FREE_SPACE;
-				} else {
-					if (!hasObstNeigh(i, j)) {
-						world[i][j] = getRand(3);
-						if (world[i][j] == Constants.OBJECT)
-							numberOfPiles++;
+				if (world[i][j] == 0) {
+					if (i == 0 && j == 0) {
+						world[i][j] = Constants.FREE_SPACE;
 					} else {
-						world[i][j] = getRand(2);
-						if (world[i][j] == Constants.OBJECT)
-							numberOfPiles++;
+						if (!hasObstNeigh(i, j)) {
+							world[i][j] = getRand(3);
+							if (world[i][j] == Constants.OBJECT)
+								numberOfPiles++;
+						} else {
+							world[i][j] = getRand(2);
+							if (world[i][j] == Constants.OBJECT)
+								numberOfPiles++;
+						}
 					}
 				}
 			}
@@ -119,7 +124,9 @@ public class World {
 					res += "O";
 				} else if (world[i][j] == Constants.OBSTACLE) {
 					res += "X";
-				}
+				} else if (world[i][j] == Constants.BASE) {
+					res += "B";
+				} 
 			}
 			res += "\n";
 		}
@@ -151,7 +158,13 @@ public class World {
 					g2d.setColor(Constants.OBJECT_COLOR);
 					g2d.fillRect(scaledI, scaledJ, scale, scale);
 				}
+					
 			}
 		}
+		
+		g2d.setColor(Constants.BASE_COLOR);
+		int base_x = basePosition.getI() * scale - scale / 2;
+		int base_y = basePosition.getJ() * scale - scale / 2;
+		g2d.fillOval(base_x , base_y, 2 * scale, 2 * scale);
 	}
 }
