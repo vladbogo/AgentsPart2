@@ -16,7 +16,7 @@ public class Main extends JPanel {
 			public void run() {
 				// TODO: Write program logic.
 				while (true) {
-					//p.move();
+					p.move();
 
 					repaint();
 					pause(100);

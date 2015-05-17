@@ -20,11 +20,11 @@ public class Constants {
 
 	// World related constants.
 	public static final int WORLD_SIZE = 30;
-	public static final int BASE = 100;
+	public static final int BASE = 10000;
+	public static final int AGENT = 10001;
 	public static final int FREE_SPACE = 0;
 	public static final int OBSTACLE = 2;
 	public static final int OBJECT = 1;
-	public static final int AGENT = 3;
 
 	// Agent related constants.
 	public static final int UP = 0;
