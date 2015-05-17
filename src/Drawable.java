@@ -1,3 +1,6 @@
+/**
+ * Represents a drawable moving object.
+ */
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -6,28 +9,59 @@ import java.awt.geom.NoninvertibleTransformException;
 
 public class Drawable {
 
+	// Position of the object relative to the drawing canvas.
 	protected Pair drawingPosition;
-	protected int r, range;
-	protected double angle;
+	// Size of the object.
+	protected int r;
+	// Sense area.
+	protected int range;
 	protected Color baseColor, arrowColor, rangeColor;
 
-	public Drawable(Pair p, int r, int angle, int range, Color baseC,
+	// Scale factor between the real and the drawing space.
+	public int scaleFactor = 0;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param p
+	 *            Drawing position of the object.
+	 * @param r
+	 *            Size of the object.
+	 * @param range
+	 *            Sensing range of the object.
+	 * @param worldSize
+	 *            Size of the world.
+	 * @param baseC
+	 *            Base color of the object.
+	 * @param arrowC
+	 *            Arrow color of the object.
+	 * @param rangeC
+	 *            Color of the range.
+	 */
+	public Drawable(Pair p, int r, int range, int worldSize, Color baseC,
 			Color arrowC, Color rangeC) {
-		drawingPosition = p;
+		scaleFactor = Constants.CANVAS_SIZE / worldSize;
+
+		drawingPosition = toDrawingPosition(p);
 		this.r = r;
-		this.range = range;
-		this.angle = Math.toRadians(angle);
+		this.range = toDrawingRange(range);
 		baseColor = baseC;
 		arrowColor = arrowC;
 		rangeColor = rangeC;
+
 	}
 
+	/**
+	 * Draw the object
+	 * 
+	 * @param g
+	 *            Graphics context.
+	 */
 	public void draw(Graphics g) {
 		AffineTransform tr = new AffineTransform();
 		Graphics2D g2d = (Graphics2D) g;
 
 		tr.translate(drawingPosition.getI(), drawingPosition.getJ());
-		tr.rotate(angle);
 		g2d.setTransform(tr);
 
 		g2d.setColor(baseColor);
@@ -37,11 +71,6 @@ public class Drawable {
 			g2d.setColor(rangeColor);
 			g2d.drawOval(-range, -range, 2 * range, 2 * range);
 
-			g2d.setColor(arrowColor);
-			tr.translate(r, 0);
-			tr.rotate(Math.toRadians(45));
-			g2d.setTransform(tr);
-			g2d.fillRect(-r / 4, -r / 4, r / 2, r / 2);
 		}
 
 		try {
@@ -52,26 +81,27 @@ public class Drawable {
 		}
 	}
 
-	public void moveDrawing(double viteza) {
-		double sin = Math.sin(angle);
-		double cos = Math.cos(angle);
+	/**
+	 * Transform the current position to the drawing space.
+	 * 
+	 * @param p
+	 *            Position in actual space.
+	 * @return Position in drawing space.
+	 */
+	protected Pair toDrawingPosition(Pair p) {
+		return new Pair(p.getI() * scaleFactor + scaleFactor / 2, p.getJ()
+				* scaleFactor + scaleFactor / 2);
+	}
 
-		int x = drawingPosition.getI();
-		int y = drawingPosition.getJ();
-		if (x + cos * viteza < 0)
-			x = Constants.CANVAS_SIZE;
-		else if (x + cos * viteza > Constants.CANVAS_SIZE)
-			x = 0;
-		else
-			x += cos * viteza;
-		if (y + sin * viteza < 0)
-			y = Constants.CANVAS_SIZE;
-		else if (y + sin * viteza > Constants.CANVAS_SIZE)
-			y = 0;
-		else
-			y += sin * viteza;
-		drawingPosition.setI(x);
-		drawingPosition.setJ(y);
+	/**
+	 * Transform range to drawing space.
+	 * 
+	 * @param range
+	 *            Original range.
+	 * @return Range in the drawing space
+	 */
+	protected int toDrawingRange(int range) {
+		return range * scaleFactor + scaleFactor / 2;
 	}
 
 	public void setR(int r) {
@@ -86,11 +116,4 @@ public class Drawable {
 		this.range = range;
 	}
 
-	public double getAngle() {
-		return angle;
-	}
-
-	public void setAngle(double angle) {
-		this.angle = angle;
-	}
 }

@@ -9,8 +9,9 @@ public class RandomAgent extends Drawable {
 	Random rand;
 	public int scaleFactor = 0;
 
-	public RandomAgent(World m, Pair initial_pos, int r, int angle, int range) {
-		super(initial_pos, r, angle, range, Constants.RANDOM_BASE,
+	public RandomAgent(World m, Pair initial_pos, int r, int range) {
+		// Call super constructor to init the drawable object.
+		super(initial_pos, r, range, m.n, Constants.RANDOM_BASE,
 				Constants.RANDOM_ARROW, Constants.RANDOM_RANGE);
 		// TODO random generate position.
 		this.agentPosition = new Pair(0, 0);
@@ -18,7 +19,7 @@ public class RandomAgent extends Drawable {
 		points = 0;
 		rand = new Random(42);
 		dir = Constants.LEFT;
-		scaleFactor = Constants.CANVAS_SIZE / m.n;
+
 	}
 
 	private Pair computePoz(Pair actualPoz, int dir) {
@@ -35,11 +36,6 @@ public class RandomAgent extends Drawable {
 		}
 
 		return p;
-	}
-
-	private Pair toDrawingPosition(Pair p) {
-		return new Pair(p.getI() * scaleFactor + scaleFactor / 2, p.getJ()
-				* scaleFactor + scaleFactor / 2);
 	}
 
 	public void move() {

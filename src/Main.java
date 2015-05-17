@@ -14,7 +14,7 @@ public class Main extends JPanel {
 			public void run() {
 				// TODO: Write program logic.
 				while (true) {
-					p.move();
+					//p.move();
 
 					repaint();
 					pause(100);
@@ -42,7 +42,7 @@ public class Main extends JPanel {
 
 	public static void init() {
 		m = new World(Constants.WORLD_SIZE);
-		p = new RandomAgent(m, new Pair(0, 0), 10, 270, 3);
+		p = new RandomAgent(m, new Pair(10, 10), 10, 1);
 	}
 
 	public static void pause(int time) {
