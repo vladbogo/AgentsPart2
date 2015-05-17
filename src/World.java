@@ -3,6 +3,8 @@
  */
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class World {
@@ -15,6 +17,7 @@ public class World {
 	// Number of piles.
 	public int numberOfPiles;
 	private Random rand;
+	private HashMap<Pair, ArrayList<Pair>> mapPiles;
 
 	/**
 	 * Create a world.
@@ -31,10 +34,25 @@ public class World {
 		world = new int[n][n];
 		world[basePosition.getI()][basePosition.getJ()] = Constants.BASE;
 		genWorld();
+		mapPiles = new HashMap<>();
 	}
 
+	/**
+	 * Maps a [0-nr] number to free space, obstacle or pile.
+	 * 
+	 * @param nr
+	 *            Number of params to generate. Can be 2 or 3.
+	 * @return
+	 */
 	private int getRand(int nr) {
-		return rand.nextInt(nr);
+		int n = rand.nextInt(nr);
+		if (n == 0)
+			return Constants.FREE_SPACE;
+		if (n == 1)
+			return Constants.OBJECT;
+		if (n == 2)
+			return Constants.OBSTACLE;
+		return n;
 	}
 
 	/**
@@ -74,12 +92,18 @@ public class World {
 					} else {
 						if (!hasObstNeigh(i, j)) {
 							world[i][j] = getRand(3);
-							if (world[i][j] == Constants.OBJECT)
+							if (world[i][j] == Constants.OBJECT) {
+								world[i][j] = rand
+										.nextInt(Constants.MAX_OBJECTS_PER_PILE);
 								numberOfPiles++;
+							}
 						} else {
 							world[i][j] = getRand(2);
-							if (world[i][j] == Constants.OBJECT)
+							if (world[i][j] == Constants.OBJECT) {
+								world[i][j] = rand
+										.nextInt(Constants.MAX_OBJECTS_PER_PILE);
 								numberOfPiles++;
+							}
 						}
 					}
 				}
@@ -126,11 +150,24 @@ public class World {
 					res += "X";
 				} else if (world[i][j] == Constants.BASE) {
 					res += "B";
-				} 
+				} else {
+					res += world[i][j] + "";
+				}
 			}
 			res += "\n";
 		}
 		return res;
+	}
+
+	/**
+	 * Checks if value is pile.
+	 * 
+	 * @param value
+	 *            Input value
+	 * @return Checks if value is pile.
+	 */
+	public boolean isPile(int value) {
+		return value > 0 && value < Constants.MAX_OBJECTS_PER_PILE;
 	}
 
 	/**
@@ -152,19 +189,39 @@ public class World {
 				g2d.drawRect(scaledI, scaledJ, scale, scale);
 				if (world[i][j] == Constants.OBSTACLE) {
 					g2d.setColor(Constants.OBSTACLE_COLOR);
-					g2d.fillRect(scaledI, scaledJ, scale, scale);
+					g2d.fillOval(scaledI, scaledJ, scale, scale);
+				} else {
+					if (isPile(world[i][j])) {
+						g2d.setColor(Constants.OBJECT_COLOR);
+						ArrayList<Pair> pile = mapPiles.get(new Pair(i, j));
+						if (pile != null) {
+							for (int k = 0; k < pile.size(); k++) {
+								g2d.fillOval(pile.get(k).getI(), pile.get(k)
+										.getJ(), Constants.OBJECT_SIZE,
+										Constants.OBJECT_SIZE);
+							}
+						} else {
+							pile = new ArrayList<>();
+							for (int k = 0; k < world[i][j]; k++) {
+								int x_offset = rand.nextInt(scale);
+								int y_offset = rand.nextInt(scale);
+								pile.add(new Pair(scaledI + x_offset, scaledJ
+										+ y_offset));
+								g2d.fillOval(pile.get(k).getI(), pile.get(k)
+										.getJ(), Constants.OBJECT_SIZE,
+										Constants.OBJECT_SIZE);
+							}
+							mapPiles.put(new Pair(i, j), pile);
+						}
+					}
 				}
-				if (world[i][j] == Constants.OBJECT) {
-					g2d.setColor(Constants.OBJECT_COLOR);
-					g2d.fillRect(scaledI, scaledJ, scale, scale);
-				}
-					
+
 			}
 		}
-		
+
 		g2d.setColor(Constants.BASE_COLOR);
 		int base_x = basePosition.getI() * scale - scale / 2;
 		int base_y = basePosition.getJ() * scale - scale / 2;
-		g2d.fillOval(base_x , base_y, 2 * scale, 2 * scale);
+		g2d.fillOval(base_x, base_y, 2 * scale, 2 * scale);
 	}
 }
