@@ -2,14 +2,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
 
-public class Maze {
+public class World {
 	public int n;
 	public Pair agentPosition;
 	public int[][] maze;
 	public int numberOfObjects;
 	private Random rand;
 
-	public Maze(int n) {
+	public World(int n) {
 		this.n = n;
 		agentPosition = new Pair(0, 0);
 		rand = new Random(42);

@@ -6,7 +6,7 @@ import javax.swing.*;
 public class Main extends JPanel {
 
 	public static RandomAgent p;
-	public static Maze m;
+	public static World m;
 
 	public Main() {
 		Thread animationThread = new Thread() {
@@ -41,7 +41,7 @@ public class Main extends JPanel {
 	}
 
 	public static void init() {
-		m = new Maze(50);
+		m = new World(50);
 		p = new RandomAgent(m, new Pair(0, 0), 10, 270, 3);
 	}
 

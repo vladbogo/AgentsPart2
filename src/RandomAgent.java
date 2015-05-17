@@ -2,13 +2,13 @@ import java.util.Random;
 
 public class RandomAgent extends Drawable {
 
-	public Maze m;
+	public World m;
 	public int points;
 	public int dir;
 	Random rand;
 	public int scaleFactor = 0;
 
-	public RandomAgent(Maze m, Pair initial_pos, int r, int angle, int range) {
+	public RandomAgent(World m, Pair initial_pos, int r, int angle, int range) {
 		super(initial_pos, r, angle, range, Constants.RANDOM_BASE,
 				Constants.RANDOM_ARROW, Constants.RANDOM_RANGE);
 		this.m = m;
