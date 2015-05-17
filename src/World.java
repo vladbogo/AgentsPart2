@@ -110,15 +110,19 @@ public class World {
 			}
 		}
 	}
-
-	public boolean hasObject(Pair poz) {
-		return world[poz.getI()][poz.getJ()] == Constants.OBJECT;
+	
+	public boolean hasPile(Pair poz) {
+		int numberOfObjects = world[poz.getI()][poz.getJ()];
+		return isPile(numberOfObjects);
 	}
 
 	public void pickUpObject(Pair poz) {
-		if (hasObject(poz)) {
-			numberOfPiles--;
-			world[poz.getI()][poz.getJ()] = Constants.FREE_SPACE;
+		int numberOfObjects = world[poz.getI()][poz.getJ()];
+		if (isPile(numberOfObjects)) {
+			world[poz.getI()][poz.getJ()]--;
+			ArrayList<Pair> piles = mapPiles.get(poz);
+			if (piles != null)
+				piles.remove(0);
 		}
 	}
 

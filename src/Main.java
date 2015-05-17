@@ -19,7 +19,7 @@ public class Main extends JPanel {
 					p.move();
 
 					repaint();
-					pause(100);
+					pause(Constants.SLEEP);
 
 				}
 
@@ -62,7 +62,7 @@ public class Main extends JPanel {
 		
 		init();
 
-		pause(100);
+		pause(Constants.SLEEP);
 
 		/* Render the frame */
 		SwingUtilities.invokeLater(new Runnable() {

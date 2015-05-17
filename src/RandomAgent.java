@@ -42,7 +42,7 @@ public class RandomAgent extends Drawable {
 		Pair actualPoz = agentPosition;
 		Pair newPoz;
 
-		if (m.hasObject(actualPoz)) {
+		if (m.hasPile(actualPoz)) {
 			m.pickUpObject(actualPoz);
 			points += Constants.OBJECT_POINTS;
 		}
