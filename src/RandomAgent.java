@@ -51,7 +51,7 @@ public class RandomAgent extends Drawable {
 		while (true) {
 			newDir = rand.nextInt(4);
 			newPoz = computePoz(actualPoz, newDir);
-			if (m.isOk(newPoz))
+			if (m.isInside(newPoz))
 				break;
 		}
 

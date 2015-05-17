@@ -18,6 +18,7 @@ public class Constants {
 	public static final Color RANDOM_BASE_COLOR = Color.RED;
 	public static final Color RANDOM_ARROW_COLOR = Color.GREEN;
 	public static final Color RANDOM_RANGE_COLOR = Color.BLUE;
+	public static final Color BLIMP_COLOR = Color.GREEN;
 
 	// World related constants.
 	public static final int WORLD_SIZE = 30;

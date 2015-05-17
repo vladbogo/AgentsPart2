@@ -17,6 +17,7 @@ public class World {
 	// Number of piles.
 	public int numberOfPiles;
 	private Random rand;
+	// A mapping for every pile to the drawing circles.
 	private HashMap<Pair, ArrayList<Pair>> mapPiles;
 
 	/**
@@ -110,12 +111,24 @@ public class World {
 			}
 		}
 	}
-	
+
+	/**
+	 * Check if a particular position contains a pile or not.
+	 * 
+	 * @param poz
+	 *            Actual position
+	 */
 	public boolean hasPile(Pair poz) {
 		int numberOfObjects = world[poz.getI()][poz.getJ()];
 		return isPile(numberOfObjects);
 	}
 
+	/**
+	 * Pickup an object from a pile
+	 * 
+	 * @param poz
+	 *            Position where to pickup the object.
+	 */
 	public void pickUpObject(Pair poz) {
 		int numberOfObjects = world[poz.getI()][poz.getJ()];
 		if (isPile(numberOfObjects)) {
@@ -126,7 +139,10 @@ public class World {
 		}
 	}
 
-	public boolean isOk(Pair poz) {
+	/**
+	 * Check if a given position is inside the world.
+	 */
+	public boolean isInside(Pair poz) {
 		if (poz.getI() < 0)
 			return false;
 		if (poz.getJ() < 0)
@@ -174,6 +190,11 @@ public class World {
 		return value > 0 && value < Constants.MAX_OBJECTS_PER_PILE;
 	}
 
+	public boolean isBlimp(int value) {
+		// TODO add constraint
+		return false;
+	}
+
 	/**
 	 * Draw the world.
 	 * 
@@ -217,6 +238,11 @@ public class World {
 							}
 							mapPiles.put(new Pair(i, j), pile);
 						}
+					}
+					if (isBlimp(world[i][j])) {
+						g2d.setColor(Constants.BLIMP_COLOR);
+						g2d.fillOval(scaledI + scale / 4, scaledJ + scale / 4,
+								scale / 2, scale / 2);
 					}
 				}
 
