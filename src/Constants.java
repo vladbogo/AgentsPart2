@@ -12,13 +12,13 @@ public class Constants {
 	public static final Color OBSTACLE_COLOR = Color.LIGHT_GRAY;
 	public static final Color OBJECT_COLOR = Color.MAGENTA;
 	public static final Color BASE_COLOR = Color.YELLOW;
+	public static final Color BLIMP_COLOR = Color.GREEN;
 	public static final int OBJECT_SIZE = 5;
 
 	// Random agent colors
 	public static final Color RANDOM_BASE_COLOR = Color.RED;
 	public static final Color RANDOM_ARROW_COLOR = Color.GREEN;
 	public static final Color RANDOM_RANGE_COLOR = Color.BLUE;
-	public static final Color BLIMP_COLOR = Color.GREEN;
 
 	// World related constants.
 	public static final int WORLD_SIZE = 30;
@@ -27,13 +27,17 @@ public class Constants {
 	public static final int FREE_SPACE = 0;
 	public static final int OBSTACLE = -1;
 	public static final int OBJECT = -3;
-	public static final int MAX_OBJECTS_PER_PILE = 3;
+	public static final int MAX_OBJECTS_PER_PILE = 10;
 
 	// Agent related constants.
 	public static final int UP = 0;
 	public static final int LEFT = 1;
 	public static final int DOWN = 2;
 	public static final int RIGHT = 3;
+
+	public static final int MAX_NUMBER_OF_OBJECTS = 1;
+	public static final int AGENT_RADIUS = 10;
+	public static final int AGENT_RANGE = 1;
 
 	public static final int OBJECT_POINTS = 100;
 	public static final int ACTION_POINTS = 1;

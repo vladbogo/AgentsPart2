@@ -16,6 +16,8 @@ public class Drawable {
 	// Sense area.
 	protected int range;
 	protected Color baseColor, arrowColor, rangeColor;
+	// True false if the agent carries objects.
+	protected boolean isFull;
 
 	// Scale factor between the real and the drawing space.
 	public int scaleFactor = 0;
@@ -48,7 +50,7 @@ public class Drawable {
 		baseColor = baseC;
 		arrowColor = arrowC;
 		rangeColor = rangeC;
-
+		isFull = false;
 	}
 
 	/**
@@ -66,6 +68,10 @@ public class Drawable {
 
 		g2d.setColor(baseColor);
 		g2d.fillOval(-r, -r, 2 * r, 2 * r);
+		if (isFull) {
+			g2d.setColor(Constants.OBJECT_COLOR);
+			g2d.fillOval(-r / 2, -r / 2, r, r);
+		}
 
 		if (!arrowColor.equals(Constants.NOTVISIBLE_COLOR)) {
 			g2d.setColor(rangeColor);

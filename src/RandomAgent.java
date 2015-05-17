@@ -8,8 +8,14 @@ public class RandomAgent extends Drawable {
 	public int dir;
 	Random rand;
 	public int scaleFactor = 0;
+	// The maximum number of objects the agent can carry.
+	public int maxNumberOfObjects = 0;
+	public int numberOfObjects;
+	// Search mode.
+	public boolean search;
 
-	public RandomAgent(World m, int r, int range, Random rand) {
+	public RandomAgent(World m, int r, int range, int maxNumberOfObjects,
+			Random rand) {
 		// Call super constructor to init the drawable object.
 		super(m.basePosition, r, range, m.n, Constants.RANDOM_BASE_COLOR,
 				Constants.RANDOM_ARROW_COLOR, Constants.RANDOM_RANGE_COLOR);
@@ -19,7 +25,10 @@ public class RandomAgent extends Drawable {
 		points = 0;
 		this.rand = rand;
 		dir = Constants.LEFT;
-
+		this.maxNumberOfObjects = maxNumberOfObjects;
+		numberOfObjects = 0;
+		// Enable search mode.
+		search = true;
 	}
 
 	private Pair computePoz(Pair actualPoz, int dir) {
@@ -39,64 +48,45 @@ public class RandomAgent extends Drawable {
 	}
 
 	public void move() {
-		Pair actualPoz = agentPosition;
-		Pair newPoz;
+		if (search) {
+			// Random move.
+			Pair actualPoz = agentPosition;
+			Pair newPoz;
 
-		if (m.hasPile(actualPoz)) {
-			m.pickUpObject(actualPoz);
-			points += Constants.OBJECT_POINTS;
-		}
-		int newDir;
+			if (m.hasPile(actualPoz)) {
+				m.pickUpObject(actualPoz);
 
-		while (true) {
-			newDir = rand.nextInt(4);
-			newPoz = computePoz(actualPoz, newDir);
-			if (m.isInside(newPoz))
-				break;
-		}
+				numberOfObjects++;
+				if (numberOfObjects == maxNumberOfObjects) {
+					isFull = true;
+					search = false;
+				}
 
-		int val = Math.abs(dir - newDir) % 2;
+				points += Constants.OBJECT_POINTS;
+			}
+			int newDir;
 
-		points -= val * Constants.ACTION_POINTS;
-
-		agentPosition= newPoz;
-
-		// Update drawing
-		// this.angle = toDrawingAngle(dir);
-		drawingPosition = toDrawingPosition(newPoz);
-	}
-
-	public void start() {
-		while (m.numberOfPiles > 0) {
-			System.out.println("Agent in pozitia: " + agentPosition
-					+ " cu puncte: " + points);
-			System.out.println(m);
-			try {
-				Thread.sleep(Constants.SLEEP);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			while (true) {
+				newDir = rand.nextInt(4);
+				newPoz = computePoz(actualPoz, newDir);
+				if (m.isInside(newPoz))
+					break;
 			}
 
-			move();
+			int val = Math.abs(dir - newDir) % 2;
+
+			points -= val * Constants.ACTION_POINTS;
+
+			agentPosition = newPoz;
+
+			// Update drawing
+			// this.angle = toDrawingAngle(dir);
+			drawingPosition = toDrawingPosition(newPoz);
+		} else {
+			// TODO: Go to base.
 		}
-
-		while (!agentPosition.equals(new Pair(0, 0))) {
-			System.out.println("Agent in pozitia: " + agentPosition
-					+ " cu puncte: " + points);
-			System.out.println(m);
-			try {
-				Thread.sleep(Constants.SLEEP);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			move();
-		}
-
-		System.out.println("Agent in pozitia: " + agentPosition
-				+ " cu puncte: " + points);
 	}
+
+	
 
 }

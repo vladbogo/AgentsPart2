@@ -45,7 +45,8 @@ public class Main extends JPanel {
 
 	public static void init() {
 		m = new World(Constants.WORLD_SIZE, rand);
-		p = new RandomAgent(m, 10, 1, rand);
+		p = new RandomAgent(m, Constants.AGENT_RADIUS, Constants.AGENT_RANGE,
+				Constants.MAX_NUMBER_OF_OBJECTS, rand);
 	}
 
 	public static void pause(int time) {
@@ -60,7 +61,7 @@ public class Main extends JPanel {
 	/** The entry main() method */
 	public static void main(String[] args) {
 		rand = new Random();
-		
+
 		init();
 
 		pause(Constants.SLEEP);
