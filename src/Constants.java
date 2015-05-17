@@ -4,6 +4,9 @@ import java.awt.Color;
 public class Constants {
 	public static final Color NOTVISIBLE_COLOR = Color.BLACK;
 	
+	// World size
+	public static final int WORLD_SIZE = 50;
+	
 	// Maze color
 	public static final Color EMPTY_SPACE_COLOR = Color.DARK_GRAY;
 	public static final Color OBSTACLE_COLOR = Color.LIGHT_GRAY;
@@ -20,6 +23,7 @@ public class Constants {
 	public static final int free = 0;
 	public static final int obstacle = 2;
 	public static final int object = 1;
+	public static final int agent = 3;
 	
 	public static final int up = 0;
 	public static final int left = 1;

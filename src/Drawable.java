@@ -6,14 +6,14 @@ import java.awt.geom.NoninvertibleTransformException;
 
 public class Drawable {
 
-	protected Pair position;
+	protected Pair drawingPosition;
 	protected int r, range;
 	protected double angle;
 	protected Color baseColor, arrowColor, rangeColor;
 
 	public Drawable(Pair p, int r, int angle, int range, Color baseC,
 			Color arrowC, Color rangeC) {
-		position = p;
+		drawingPosition = p;
 		this.r = r;
 		this.range = range;
 		this.angle = Math.toRadians(angle);
@@ -26,7 +26,7 @@ public class Drawable {
 		AffineTransform tr = new AffineTransform();
 		Graphics2D g2d = (Graphics2D) g;
 
-		tr.translate(position.getI(), position.getJ());
+		tr.translate(drawingPosition.getI(), drawingPosition.getJ());
 		tr.rotate(angle);
 		g2d.setTransform(tr);
 
@@ -56,8 +56,8 @@ public class Drawable {
 		double sin = Math.sin(angle);
 		double cos = Math.cos(angle);
 
-		int x = position.getI();
-		int y = position.getJ();
+		int x = drawingPosition.getI();
+		int y = drawingPosition.getJ();
 		if (x + cos * viteza < 0)
 			x = Constants.CANVAS_SIZE;
 		else if (x + cos * viteza > Constants.CANVAS_SIZE)
@@ -70,8 +70,8 @@ public class Drawable {
 			y = 0;
 		else
 			y += sin * viteza;
-		position.setI(x);
-		position.setJ(y);
+		drawingPosition.setI(x);
+		drawingPosition.setJ(y);
 	}
 
 	public void setR(int r) {

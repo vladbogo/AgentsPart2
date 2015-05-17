@@ -3,6 +3,7 @@ import java.util.Random;
 public class RandomAgent extends Drawable {
 
 	public World m;
+	public Pair agentPosition;
 	public int points;
 	public int dir;
 	Random rand;
@@ -11,6 +12,8 @@ public class RandomAgent extends Drawable {
 	public RandomAgent(World m, Pair initial_pos, int r, int angle, int range) {
 		super(initial_pos, r, angle, range, Constants.RANDOM_BASE,
 				Constants.RANDOM_ARROW, Constants.RANDOM_RANGE);
+		// TODO random generate position.
+		this.agentPosition = new Pair(0, 0);
 		this.m = m;
 		points = 0;
 		rand = new Random(42);
@@ -33,13 +36,14 @@ public class RandomAgent extends Drawable {
 
 		return p;
 	}
-	
+
 	private Pair toDrawingPosition(Pair p) {
-		return new Pair(p.getI() * scaleFactor + scaleFactor / 2, p.getJ() * scaleFactor + scaleFactor / 2);
+		return new Pair(p.getI() * scaleFactor + scaleFactor / 2, p.getJ()
+				* scaleFactor + scaleFactor / 2);
 	}
 
 	public void move() {
-		Pair actualPoz = m.agentPosition;
+		Pair actualPoz = agentPosition;
 		Pair newPoz;
 
 		if (m.hasObject(actualPoz)) {
@@ -59,16 +63,16 @@ public class RandomAgent extends Drawable {
 
 		points -= val * Constants.actionPoints;
 
-		m.moveAgent(newPoz);
-		
+		agentPosition= newPoz;
+
 		// Update drawing
 		// this.angle = toDrawingAngle(dir);
-		this.position = toDrawingPosition(newPoz);
+		drawingPosition = toDrawingPosition(newPoz);
 	}
 
 	public void start() {
 		while (m.numberOfObjects > 0) {
-			System.out.println("Agent in pozitia: " + m.agentPosition
+			System.out.println("Agent in pozitia: " + agentPosition
 					+ " cu puncte: " + points);
 			System.out.println(m);
 			try {
@@ -81,8 +85,8 @@ public class RandomAgent extends Drawable {
 			move();
 		}
 
-		while (!m.agentPosition.equals(new Pair(0, 0))) {
-			System.out.println("Agent in pozitia: " + m.agentPosition
+		while (!agentPosition.equals(new Pair(0, 0))) {
+			System.out.println("Agent in pozitia: " + agentPosition
 					+ " cu puncte: " + points);
 			System.out.println(m);
 			try {
@@ -95,7 +99,7 @@ public class RandomAgent extends Drawable {
 			move();
 		}
 
-		System.out.println("Agent in pozitia: " + m.agentPosition
+		System.out.println("Agent in pozitia: " + agentPosition
 				+ " cu puncte: " + points);
 	}
 

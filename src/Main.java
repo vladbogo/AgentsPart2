@@ -41,7 +41,7 @@ public class Main extends JPanel {
 	}
 
 	public static void init() {
-		m = new World(50);
+		m = new World(Constants.WORLD_SIZE);
 		p = new RandomAgent(m, new Pair(0, 0), 10, 270, 3);
 	}
 
