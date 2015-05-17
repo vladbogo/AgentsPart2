@@ -6,6 +6,7 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class Main extends JPanel {
 
+	// agent
 	public static RandomAgent p;
 	public static World m;
 	public static Random rand;
