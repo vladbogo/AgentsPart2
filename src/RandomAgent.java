@@ -11,8 +11,8 @@ public class RandomAgent extends Drawable {
 
 	public RandomAgent(World m, Pair initial_pos, int r, int range) {
 		// Call super constructor to init the drawable object.
-		super(initial_pos, r, range, m.n, Constants.RANDOM_BASE,
-				Constants.RANDOM_ARROW, Constants.RANDOM_RANGE);
+		super(initial_pos, r, range, m.n, Constants.RANDOM_BASE_COLOR,
+				Constants.RANDOM_ARROW_COLOR, Constants.RANDOM_RANGE_COLOR);
 		// TODO random generate position.
 		this.agentPosition = new Pair(0, 0);
 		this.m = m;

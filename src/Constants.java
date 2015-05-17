@@ -9,9 +9,9 @@ public class Constants {
 	public static final Color OBJECT_COLOR = Color.YELLOW;
 
 	// Random agent colors
-	public static final Color RANDOM_BASE = Color.RED;
-	public static final Color RANDOM_ARROW = Color.GREEN;
-	public static final Color RANDOM_RANGE = Color.BLUE;
+	public static final Color RANDOM_BASE_COLOR = Color.RED;
+	public static final Color RANDOM_ARROW_COLOR = Color.GREEN;
+	public static final Color RANDOM_RANGE_COLOR = Color.BLUE;
 
 	// General constants.
 	public static final int CANVAS_SIZE = 600;
