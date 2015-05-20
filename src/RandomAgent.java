@@ -27,7 +27,9 @@ public class RandomAgent extends Drawable {
 		super(m.basePosition, r, range, m.n, Constants.RANDOM_BASE_COLOR,
 				Constants.RANDOM_ARROW_COLOR, Constants.RANDOM_RANGE_COLOR);
 		// TODO random generate position.
-		this.agentPosition = m.basePosition;
+		int poz_i = rand.nextInt(Constants.WORLD_SIZE);
+		int poz_j = rand.nextInt(Constants.WORLD_SIZE);
+		this.agentPosition = new Pair(poz_i, poz_j);
 		this.m = m;
 		points = 0;
 		this.rand = rand;
@@ -105,13 +107,14 @@ public class RandomAgent extends Drawable {
 
 	public void move() {
 		Pair next;
+		System.out.println("Number of objects " + numberOfObjects);
 		if (isAtTheBase()) {
 			numberOfObjects = 0;
 			isFull = false;
 			System.out.println("Drop objects at the base");
 			// crumbs_needed = false;
 		}
-		if (m.hasPile(agentPosition)) {
+		if (m.hasPile(agentPosition) && numberOfObjects != maxNumberOfObjects) {
 			m.pickUpObject(agentPosition);
 			no_crumbs = m.no_Objects(agentPosition);
 			if (m.no_Objects(agentPosition) > 0) {

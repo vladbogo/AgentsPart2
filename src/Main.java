@@ -1,15 +1,20 @@
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.*;
+
+import sun.management.resources.agent;
 
 @SuppressWarnings("serial")
 public class Main extends JPanel {
 
 	// agent
-	public static RandomAgent p;
+	// public static RandomAgent p;
 	public static World m;
 	public static Random rand;
+
+	static ArrayList<RandomAgent> agents;
 
 	public Main() {
 		Thread animationThread = new Thread() {
@@ -17,7 +22,10 @@ public class Main extends JPanel {
 			public void run() {
 				// TODO: Write program logic.
 				while (true) {
-					p.move();
+					// p.move();
+					for (int i = 0; i < agents.size(); i++) {
+						agents.get(i).move();
+					}
 
 					repaint();
 					pause(Constants.SLEEP);
@@ -40,13 +48,23 @@ public class Main extends JPanel {
 		/* TODO drawings */
 		m.draw(g);
 
-		p.draw(g);
+		// p.draw(g);
+		for (int i = 0; i < agents.size(); i++) {
+			agents.get(i).draw(g);
+		}
 	}
 
 	public static void init() {
 		m = new World(Constants.WORLD_SIZE, rand);
-		p = new RandomAgent(m, Constants.AGENT_RADIUS, Constants.AGENT_RANGE,
-				Constants.MAX_NUMBER_OF_OBJECTS, rand);
+		agents = new ArrayList<>();
+		// p = new RandomAgent(m, Constants.AGENT_RADIUS, Constants.AGENT_RANGE,
+		// Constants.MAX_NUMBER_OF_OBJECTS, rand);
+		for (int i = 0; i < Constants.NO_AGENTS; i++) {
+			RandomAgent ag = new RandomAgent(m, Constants.AGENT_RADIUS,
+					Constants.AGENT_RANGE, Constants.MAX_NUMBER_OF_OBJECTS,
+					rand);
+			agents.add(ag);
+		}
 	}
 
 	public static void pause(int time) {
