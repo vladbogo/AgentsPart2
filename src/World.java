@@ -140,8 +140,22 @@ public class World {
 	}
 
 	/**
-	 * Check if a given position is inside the world.
-	 * return false if it is not insider or if it's an obstacle
+	 * return the number of objects in that position
+	 */
+
+	public int no_Objects(Pair poz) {
+		if (!isInside(poz))
+			return 0;
+		int numberOfObjects = world[poz.getI()][poz.getJ()];
+		if (isPile(numberOfObjects)) {
+			return numberOfObjects;
+		}
+		return 0;
+	}
+
+	/**
+	 * Check if a given position is inside the world. return false if it is not
+	 * insider or if it's an obstacle
 	 */
 	public boolean isInside(Pair poz) {
 		if (poz.getI() < 0)
@@ -191,11 +205,6 @@ public class World {
 		return value > 0 && value < Constants.MAX_OBJECTS_PER_PILE;
 	}
 
-	public boolean isBlimp(int value) {
-		// TODO add constraint
-		return false;
-	}
-
 	/**
 	 * Draw the world.
 	 * 
@@ -240,8 +249,8 @@ public class World {
 							mapPiles.put(new Pair(i, j), pile);
 						}
 					}
-					if (isBlimp(world[i][j])) {
-						g2d.setColor(Constants.BLIMP_COLOR);
+					if (isCrumb(new Pair(i, j)) > 0) {
+						g2d.setColor(Constants.CRUMB_COLOR);
 						g2d.fillOval(scaledI + scale / 4, scaledJ + scale / 4,
 								scale / 2, scale / 2);
 					}
@@ -254,5 +263,54 @@ public class World {
 		int base_x = basePosition.getI() * scale - scale / 2;
 		int base_y = basePosition.getJ() * scale - scale / 2;
 		g2d.fillOval(base_x, base_y, 2 * scale, 2 * scale);
+	}
+
+	/**
+	 * Add crumbs on that position
+	 * 
+	 * @param poz
+	 *            Position
+	 * @param nr
+	 *            Number of crumbs
+	 */
+	public void setCrumbs(Pair poz, int nr) {
+		if (world[poz.getI()][poz.getJ()] == Constants.FREE_SPACE
+				|| isCrumb(poz) > 0) {
+			if (nr < 1) {
+				world[poz.getI()][poz.getJ()] = Constants.FREE_SPACE;
+			} else {
+				world[poz.getI()][poz.getJ()] = Constants.MAX_OBJECTS_PER_PILE
+						+ nr;
+			}
+		}
+	}
+
+	/**
+	 * Check if it is a crumb on that position
+	 */
+
+	public int isCrumb(Pair poz) {
+		if (!isInside(poz)) {
+			return 0;
+		}
+		int res = world[poz.getI()][poz.getJ()]
+				- Constants.MAX_OBJECTS_PER_PILE;
+		if (res > 0) {
+			return res;
+		}
+		return 0;
+	}
+
+	/**
+	 * Remove 1 crumb from the position
+	 * 
+	 * @param poz
+	 *            position
+	 */
+	public void decreseCrumbs(Pair poz) {
+		int nr = isCrumb(poz);
+		if (nr > 0) {
+			setCrumbs(poz, nr - 1);
+		}
 	}
 }

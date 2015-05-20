@@ -4,7 +4,7 @@ public class Constants {
 	// General constants.
 	public static final int CANVAS_SIZE = 600;
 	public static final String TITLE = "Agents";
-	public static final int SLEEP = 600;
+	public static final int SLEEP = 1000;
 	public static final Color NOTVISIBLE_COLOR = Color.BLACK;
 
 	// World colors
@@ -12,7 +12,7 @@ public class Constants {
 	public static final Color OBSTACLE_COLOR = Color.LIGHT_GRAY;
 	public static final Color OBJECT_COLOR = Color.MAGENTA;
 	public static final Color BASE_COLOR = Color.YELLOW;
-	public static final Color BLIMP_COLOR = Color.GREEN;
+	public static final Color CRUMB_COLOR = Color.GREEN;
 	public static final int OBJECT_SIZE = 5;
 
 	// Random agent colors
@@ -27,7 +27,7 @@ public class Constants {
 	public static final int FREE_SPACE = 0;
 	public static final int OBSTACLE = -1;
 	public static final int OBJECT = -3;
-	public static final int MAX_OBJECTS_PER_PILE = 10;
+	public static final int MAX_OBJECTS_PER_PILE = 5;
 
 	// Agent related constants.
 	public static final int UP = 0;
@@ -39,11 +39,13 @@ public class Constants {
 	public static final int DOWNER_RIGHT = 6;
 	public static final int DOWNER_LEFT = 7;
 
-	public static final int MAX_NUMBER_OF_OBJECTS = 5;
+	public static final int MAX_NUMBER_OF_OBJECTS = 1;
 	public static final int AGENT_RADIUS = 10;
 	public static final int AGENT_RANGE = 1;
 
 	public static final int OBJECT_POINTS = 100;
 	public static final int ACTION_POINTS = 1;
 
+	// Crumbs
+	public static final int MAX_CRUMB_INTENSITY = MAX_OBJECTS_PER_PILE;
 }

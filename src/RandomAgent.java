@@ -16,8 +16,10 @@ public class RandomAgent extends Drawable {
 	// The maximum number of objects the agent can carry.
 	public int maxNumberOfObjects = 0;
 	public int numberOfObjects;
-	// Search mode.
-	public boolean search;
+
+	int no_crumbs;
+
+	// boolean crumbs_needed = false;
 
 	public RandomAgent(World m, int r, int range, int maxNumberOfObjects,
 			Random rand) {
@@ -32,8 +34,6 @@ public class RandomAgent extends Drawable {
 		dir = Constants.LEFT;
 		this.maxNumberOfObjects = maxNumberOfObjects;
 		numberOfObjects = 0;
-		// Enable search mode.
-		search = true;
 	}
 
 	private Pair computePoz(Pair actualPoz, int dir) {
@@ -60,23 +60,100 @@ public class RandomAgent extends Drawable {
 		return p;
 	}
 
+	public boolean isAtTheBase() {
+		return agentPosition.equals(m.basePosition);
+	}
+
+	public Pair senseCrumbs() {
+		Pair new_poz = null;
+		if (m.isCrumb(agentPosition) > 0) {
+			int x[] = { 1, 1, 1, -1, -1, -1, 0, 0 };
+			int y[] = { 0, -1, 1, 0, -1, 1, -1, 1 };
+
+			int max = 0;
+			for (int i = 0; i < 8; i++) {
+				Pair poz = new Pair(agentPosition.getI() + x[i],
+						agentPosition.getJ() + y[i]);
+				if (m.isInside(poz) && m.isCrumb(poz) > max) {
+					max = m.isCrumb(poz);
+					new_poz = poz;
+				}
+			}
+
+		}
+		return new_poz;
+	}
+
+	public Pair senseObjects() {
+		Pair new_poz = null;
+
+		int x[] = { 1, 1, 1, -1, -1, -1, 0, 0 };
+		int y[] = { 0, -1, 1, 0, -1, 1, -1, 1 };
+
+		int max = 0;
+		for (int i = 0; i < 8; i++) {
+			Pair poz = new Pair(agentPosition.getI() + x[i],
+					agentPosition.getJ() + y[i]);
+			if (m.isInside(poz) && m.no_Objects(poz) > max) {
+				max = m.no_Objects(poz);
+				new_poz = poz;
+			}
+
+		}
+		return new_poz;
+	}
+
 	public void move() {
-		if (search) {
+		Pair next;
+		if (isAtTheBase()) {
+			numberOfObjects = 0;
+			isFull = false;
+			System.out.println("Drop objects at the base");
+			// crumbs_needed = false;
+		}
+		if (m.hasPile(agentPosition)) {
+			m.pickUpObject(agentPosition);
+			no_crumbs = m.no_Objects(agentPosition);
+			if (m.no_Objects(agentPosition) > 0) {
+				System.out.println("Crumb!!");
+				// crumbs_needed = true;
+				no_crumbs += Constants.MAX_CRUMB_INTENSITY;
+			}
+
+			numberOfObjects++;
+			// if (numberOfObjects == maxNumberOfObjects) {
+			// isFull = true;
+			// search = false;
+			// }
+		}
+
+		if (numberOfObjects == maxNumberOfObjects) {
+			// TODO: Go to base.
+			System.out.println("Go to base");
+			// if (crumbs_needed) {
+			m.setCrumbs(agentPosition, no_crumbs);
+			// }
+			no_crumbs--;
+			Pair newPoz = nextPositionToBase();
+			if (newPoz == null) {
+				System.out.println("OOOPS");
+			} else {
+				setAgentPos(newPoz);
+			}
+		} else if ((next = senseObjects()) != null) {
+			// TODO: du-te dupa objects
+			System.out.println("Go objects");
+			setAgentPos(next);
+		} else if ((next = senseCrumbs()) != null) {
+			System.out.println("Go after crumbs");
+			// TODO: du-te dupa crumbs
+			m.decreseCrumbs(agentPosition);
+			setAgentPos(next);
+		} else {
 			// Random move.
+			System.out.println("Random move");
 			Pair actualPoz = agentPosition;
 			Pair newPoz;
-
-			if (m.hasPile(actualPoz)) {
-				m.pickUpObject(actualPoz);
-
-				numberOfObjects++;
-				if (numberOfObjects == maxNumberOfObjects) {
-					isFull = true;
-					search = false;
-				}
-
-				points += Constants.OBJECT_POINTS;
-			}
 			int newDir;
 
 			while (true) {
@@ -88,18 +165,7 @@ public class RandomAgent extends Drawable {
 
 			int val = Math.abs(dir - newDir) % 2;
 
-			points -= val * Constants.ACTION_POINTS;
-
 			setAgentPos(newPoz);
-		} else {
-			// TODO: Go to base.
-			System.out.println("Going to the base");
-			Pair newPoz = nextPositionToBase();
-			if (newPoz == null) {
-				System.out.println("OOOPS");
-			} else {
-				setAgentPos(newPoz);
-			}
 		}
 	}
 
@@ -134,7 +200,6 @@ public class RandomAgent extends Drawable {
 		while (!(prev = previous.get(elem)).equals(agentPosition)) {
 			elem = previous.get(elem);
 		}
-		System.out.println("return " + elem + " agent " + agentPosition);
 		return elem;
 
 	}
