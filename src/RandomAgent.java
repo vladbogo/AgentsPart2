@@ -1,4 +1,9 @@
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Random;
+
+import javafx.scene.effect.Lighting;
 
 public class RandomAgent extends Drawable {
 
@@ -92,7 +97,42 @@ public class RandomAgent extends Drawable {
 			drawingPosition = toDrawingPosition(newPoz);
 		} else {
 			// TODO: Go to base.
+			System.out.println("Going to the base");
+			Pair newPoz = nextPositionToBase();
+			if (newPoz == null) {
+				System.out.println("OOOPS");
+			} else {
+				System.out.println("desenez " + newPoz);
+				drawingPosition = toDrawingPosition(newPoz);
+			}
 		}
 	}
 
+	public Pair nextPositionToBase() {
+		LinkedList<Pair> queue = new LinkedList<>();
+		queue.add(agentPosition);
+		Pair elem = null, prev;
+		HashMap<Pair, Pair> previous = new HashMap<>();
+		HashSet<Pair> visited = new HashSet<>();
+
+		while (!(elem = queue.removeFirst()).equals(m.basePosition)) {
+			int x[] = { 1, 1, 1, -1, -1, -1, 0, 0 };
+			int y[] = { 0, -1, 1, 0, -1, 1, -1, 1 };
+			for (int i = 0; i < 8; i++) {
+				Pair new_pos = new Pair(elem.getI() + x[i], elem.getJ() + y[i]);
+				if (m.isInside(new_pos) && !visited.contains(new_pos)) {
+					queue.add(new_pos);
+					visited.add(new_pos);
+					previous.put(new_pos, elem);
+				}
+			}
+		}
+
+		while (!(prev = previous.get(elem)).equals(agentPosition)) {
+			elem = previous.get(elem);
+		}
+		System.out.println("return " + elem + " agent " + agentPosition);
+		return elem;
+
+	}
 }

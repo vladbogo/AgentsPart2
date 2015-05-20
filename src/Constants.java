@@ -39,7 +39,7 @@ public class Constants {
 	public static final int DOWNER_RIGHT = 6;
 	public static final int DOWNER_LEFT = 7;
 
-	public static final int MAX_NUMBER_OF_OBJECTS = 100;
+	public static final int MAX_NUMBER_OF_OBJECTS = 5;
 	public static final int AGENT_RADIUS = 10;
 	public static final int AGENT_RANGE = 1;
 

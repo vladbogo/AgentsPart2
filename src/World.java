@@ -141,6 +141,7 @@ public class World {
 
 	/**
 	 * Check if a given position is inside the world.
+	 * return false if it is not insider or if it's an obstacle
 	 */
 	public boolean isInside(Pair poz) {
 		if (poz.getI() < 0)
