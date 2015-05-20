@@ -90,11 +90,7 @@ public class RandomAgent extends Drawable {
 
 			points -= val * Constants.ACTION_POINTS;
 
-			agentPosition = newPoz;
-
-			// Update drawing
-			// this.angle = toDrawingAngle(dir);
-			drawingPosition = toDrawingPosition(newPoz);
+			setAgentPos(newPoz);
 		} else {
 			// TODO: Go to base.
 			System.out.println("Going to the base");
@@ -102,13 +98,20 @@ public class RandomAgent extends Drawable {
 			if (newPoz == null) {
 				System.out.println("OOOPS");
 			} else {
-				agentPosition = newPoz;
-				drawingPosition = toDrawingPosition(newPoz);
+				setAgentPos(newPoz);
 			}
 		}
 	}
 
+	public void setAgentPos(Pair newPoz) {
+		agentPosition = newPoz;
+		drawingPosition = toDrawingPosition(newPoz);
+	}
+
 	public Pair nextPositionToBase() {
+		if (agentPosition.equals(m.basePosition)) {
+			return null;
+		}
 		LinkedList<Pair> queue = new LinkedList<>();
 		queue.add(agentPosition);
 		Pair elem = null, prev;
