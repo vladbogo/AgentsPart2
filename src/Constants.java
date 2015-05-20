@@ -4,7 +4,7 @@ public class Constants {
 	// General constants.
 	public static final int CANVAS_SIZE = 600;
 	public static final String TITLE = "Agents";
-	public static final int SLEEP = 100;
+	public static final int SLEEP = 600;
 	public static final Color NOTVISIBLE_COLOR = Color.BLACK;
 
 	// World colors
@@ -34,8 +34,12 @@ public class Constants {
 	public static final int LEFT = 1;
 	public static final int DOWN = 2;
 	public static final int RIGHT = 3;
+	public static final int UPPER_RIGHT = 4;
+	public static final int UPPER_LEFT = 5;
+	public static final int DOWNER_RIGHT = 6;
+	public static final int DOWNER_LEFT = 7;
 
-	public static final int MAX_NUMBER_OF_OBJECTS = 1;
+	public static final int MAX_NUMBER_OF_OBJECTS = 100;
 	public static final int AGENT_RADIUS = 10;
 	public static final int AGENT_RANGE = 1;
 

@@ -39,9 +39,17 @@ public class RandomAgent extends Drawable {
 		} else if (dir == Constants.DOWN) {
 			p = new Pair(actualPoz.getI() + 1, actualPoz.getJ());
 		} else if (dir == Constants.LEFT) {
-			p = new Pair(actualPoz.getI(), actualPoz.getJ() + 1);
-		} else if (dir == Constants.RIGHT) {
 			p = new Pair(actualPoz.getI(), actualPoz.getJ() - 1);
+		} else if (dir == Constants.RIGHT) {
+			p = new Pair(actualPoz.getI(), actualPoz.getJ() + 1);
+		} else if (dir == Constants.UPPER_LEFT) {
+			p = new Pair(actualPoz.getI() - 1, actualPoz.getJ() - 1);
+		} else if (dir == Constants.UPPER_RIGHT) {
+			p = new Pair(actualPoz.getI() - 1, actualPoz.getJ() + 1);
+		} else if (dir == Constants.DOWNER_LEFT) {
+			p = new Pair(actualPoz.getI() + 1, actualPoz.getJ() - 1);
+		} else if (dir == Constants.DOWNER_RIGHT) {
+			p = new Pair(actualPoz.getI() + 1, actualPoz.getJ() + 1);
 		}
 
 		return p;
@@ -67,7 +75,7 @@ public class RandomAgent extends Drawable {
 			int newDir;
 
 			while (true) {
-				newDir = rand.nextInt(4);
+				newDir = rand.nextInt(8);
 				newPoz = computePoz(actualPoz, newDir);
 				if (m.isInside(newPoz))
 					break;
@@ -86,7 +94,5 @@ public class RandomAgent extends Drawable {
 			// TODO: Go to base.
 		}
 	}
-
-	
 
 }
