@@ -102,7 +102,7 @@ public class RandomAgent extends Drawable {
 			if (newPoz == null) {
 				System.out.println("OOOPS");
 			} else {
-				System.out.println("desenez " + newPoz);
+				agentPosition = newPoz;
 				drawingPosition = toDrawingPosition(newPoz);
 			}
 		}
