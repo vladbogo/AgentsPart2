@@ -4,7 +4,7 @@ public class Constants {
 	// General constants.
 	public static final int CANVAS_SIZE = 600;
 	public static final String TITLE = "Agents";
-	public static final int SLEEP = 1000;
+	public static final int SLEEP = 600;
 	public static final Color NOTVISIBLE_COLOR = Color.BLACK;
 
 	// World colors
@@ -46,7 +46,7 @@ public class Constants {
 	public static final int OBJECT_POINTS = 100;
 	public static final int ACTION_POINTS = 1;
 
-	public static final int NO_AGENTS = 1;
+	public static final int NO_AGENTS = 5;
 
 	// Crumbs
 	public static final int MAX_CRUMB_INTENSITY = MAX_OBJECTS_PER_PILE;

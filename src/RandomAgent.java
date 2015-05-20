@@ -68,10 +68,9 @@ public class RandomAgent extends Drawable {
 
 	public Pair senseCrumbs() {
 		Pair new_poz = null;
+		int x[] = { 1, 1, 1, -1, -1, -1, 0, 0 };
+		int y[] = { 0, -1, 1, 0, -1, 1, -1, 1 };
 		if (m.isCrumb(agentPosition) > 0) {
-			int x[] = { 1, 1, 1, -1, -1, -1, 0, 0 };
-			int y[] = { 0, -1, 1, 0, -1, 1, -1, 1 };
-
 			int max = 0;
 			for (int i = 0; i < 8; i++) {
 				Pair poz = new Pair(agentPosition.getI() + x[i],
@@ -80,6 +79,17 @@ public class RandomAgent extends Drawable {
 					max = m.isCrumb(poz);
 					new_poz = poz;
 				}
+			}
+
+		}
+		if (new_poz != null) {
+			return new_poz;
+		}
+		for (int i = 0; i < 8; i++) {
+			Pair poz = new Pair(agentPosition.getI() + x[i],
+					agentPosition.getJ() + y[i]);
+			if (m.isInside(poz) && m.isCrumb(poz) > 0) {
+				return poz;
 			}
 
 		}
@@ -124,18 +134,12 @@ public class RandomAgent extends Drawable {
 			}
 
 			numberOfObjects++;
-			// if (numberOfObjects == maxNumberOfObjects) {
-			// isFull = true;
-			// search = false;
-			// }
 		}
 
 		if (numberOfObjects == maxNumberOfObjects) {
 			// TODO: Go to base.
 			System.out.println("Go to base");
-			// if (crumbs_needed) {
 			m.setCrumbs(agentPosition, no_crumbs);
-			// }
 			no_crumbs--;
 			Pair newPoz = nextPositionToBase();
 			if (newPoz == null) {
