@@ -3,8 +3,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 
-import javafx.scene.effect.Lighting;
-
 public class RandomAgent extends Drawable {
 
 	public World m;
@@ -124,6 +122,7 @@ public class RandomAgent extends Drawable {
 			}
 
 			numberOfObjects++;
+			isFull = true;
 			// if (numberOfObjects == maxNumberOfObjects) {
 			// isFull = true;
 			// search = false;

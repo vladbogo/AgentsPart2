@@ -4,8 +4,6 @@ import java.util.Random;
 
 import javax.swing.*;
 
-import sun.management.resources.agent;
-
 @SuppressWarnings("serial")
 public class Main extends JPanel {
 

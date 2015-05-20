@@ -46,13 +46,19 @@ public class World {
 	 * @return
 	 */
 	private int getRand(int nr) {
-		int n = rand.nextInt(nr);
-		if (n == 0)
+		int n = rand.nextInt(nr + 20);
+		if (nr == 2) {
+			if (n == 19)
+				return Constants.OBJECT;
 			return Constants.FREE_SPACE;
-		if (n == 1)
-			return Constants.OBJECT;
-		if (n == 2)
-			return Constants.OBSTACLE;
+		}
+		if (nr == 3) {
+			if (n < 3)
+				return Constants.OBSTACLE;
+			if (n == 3)
+				return Constants.OBJECT;
+			return Constants.FREE_SPACE;
+		}
 		return n;
 	}
 
