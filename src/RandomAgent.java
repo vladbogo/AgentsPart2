@@ -115,18 +115,21 @@ public class RandomAgent extends Drawable {
 
 	public void move() {
 		Pair next;
-		System.out.println("Number of objects " + numberOfObjects);
+		if (Constants.VERBOSE)
+			System.out.println("Number of objects " + numberOfObjects);
 		if (isAtTheBase()) {
 			numberOfObjects = 0;
 			isFull = false;
-			System.out.println("Drop objects at the base");
+			if (Constants.VERBOSE)
+				System.out.println("Drop objects at the base");
 			// crumbs_needed = false;
 		}
 		if (m.hasPile(agentPosition) && numberOfObjects != maxNumberOfObjects) {
 			m.pickUpObject(agentPosition);
 			no_crumbs = m.no_Objects(agentPosition);
 			if (m.no_Objects(agentPosition) > 0) {
-				System.out.println("Crumb!!");
+				if (Constants.VERBOSE)
+					System.out.println("Crumb!!");
 				// crumbs_needed = true;
 				no_crumbs += Constants.MAX_CRUMB_INTENSITY;
 			}
@@ -137,7 +140,9 @@ public class RandomAgent extends Drawable {
 
 		if (numberOfObjects == maxNumberOfObjects) {
 			// TODO: Go to base.
-			System.out.println("Go to base");
+
+			if (Constants.VERBOSE)
+				System.out.println("Go to base");
 			m.setCrumbs(agentPosition, no_crumbs);
 			no_crumbs--;
 			Pair newPoz = nextPositionToBase();
@@ -148,16 +153,20 @@ public class RandomAgent extends Drawable {
 			}
 		} else if ((next = senseObjects()) != null) {
 			// TODO: du-te dupa objects
-			System.out.println("Go objects");
+
+			if (Constants.VERBOSE)
+				System.out.println("Go objects");
 			setAgentPos(next);
 		} else if ((next = senseCrumbs()) != null) {
-			System.out.println("Go after crumbs");
+			if (Constants.VERBOSE)
+				System.out.println("Go after crumbs");
 			// TODO: du-te dupa crumbs
 			m.decreseCrumbs(agentPosition);
 			setAgentPos(next);
 		} else {
 			// Random move.
-			System.out.println("Random move");
+			if (Constants.VERBOSE)
+				System.out.println("Random move");
 			Pair actualPoz = agentPosition;
 			Pair newPoz;
 			int newDir;

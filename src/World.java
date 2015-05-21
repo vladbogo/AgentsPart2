@@ -319,4 +319,15 @@ public class World {
 			setCrumbs(poz, nr - 1);
 		}
 	}
+
+	public boolean areMoreMinerals() {
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (no_Objects(new Pair(i, j)) > 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

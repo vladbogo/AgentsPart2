@@ -14,20 +14,34 @@ public class Main extends JPanel {
 
 	static ArrayList<RandomAgent> agents;
 
+	static int time;
+
+	public boolean allAgentsEmpty() {
+		for (int i = 0; i < agents.size(); i++) {
+			if (agents.get(i).numberOfObjects > 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public Main() {
 		Thread animationThread = new Thread() {
 			@Override
 			public void run() {
 				// TODO: Write program logic.
-				while (true) {
+				while (m.areMoreMinerals() || !allAgentsEmpty()) {
 					// p.move();
 					for (int i = 0; i < agents.size(); i++) {
 						agents.get(i).move();
 					}
-
+					time++;
 					repaint();
 					pause(Constants.SLEEP);
 
+				}
+				if (!(m.areMoreMinerals() || !allAgentsEmpty())) {
+					System.out.println("time " + time);
 				}
 
 			};
@@ -76,6 +90,7 @@ public class Main extends JPanel {
 
 	/** The entry main() method */
 	public static void main(String[] args) {
+		time = 0;
 		rand = new Random();
 
 		init();
