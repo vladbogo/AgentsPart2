@@ -20,6 +20,8 @@ public class Constants {
 	public static final Color RANDOM_ARROW_COLOR = Color.GREEN;
 	public static final Color RANDOM_RANGE_COLOR = Color.BLUE;
 
+	public static final Color RANDOM_CARRIER_COLOR = Color.GREEN;
+
 	// World related constants.
 	public static final int WORLD_SIZE = 30;
 	public static final int BASE = -2;
@@ -46,7 +48,8 @@ public class Constants {
 	public static final int OBJECT_POINTS = 100;
 	public static final int ACTION_POINTS = 1;
 
-	public static final int NO_AGENTS = 5;
+	public static final int NO_SEARCH_AGENTS = 5;
+	public static final int NO_CARRIER_AGENTS = 5;
 
 	// Crumbs
 	public static final int MAX_CRUMB_INTENSITY = MAX_OBJECTS_PER_PILE;

@@ -12,13 +12,14 @@ public class Main extends JPanel {
 	public static World m;
 	public static Random rand;
 
-	static ArrayList<RandomAgent> agents;
+	static ArrayList<RandomAgent> random_agents;
+	static ArrayList<CarrierAgent> carrier_agents;
 
 	static int time;
 
 	public boolean allAgentsEmpty() {
-		for (int i = 0; i < agents.size(); i++) {
-			if (agents.get(i).numberOfObjects > 0) {
+		for (int i = 0; i < random_agents.size(); i++) {
+			if (random_agents.get(i).numberOfObjects > 0) {
 				return false;
 			}
 		}
@@ -32,8 +33,12 @@ public class Main extends JPanel {
 				// TODO: Write program logic.
 				while (m.areMoreMinerals() || !allAgentsEmpty()) {
 					// p.move();
-					for (int i = 0; i < agents.size(); i++) {
-						agents.get(i).move();
+					for (int i = 0; i < random_agents.size(); i++) {
+						random_agents.get(i).move();
+					}
+
+					for (int i = 0; i < carrier_agents.size(); i++) {
+						carrier_agents.get(i).move();
 					}
 					time++;
 					repaint();
@@ -61,21 +66,32 @@ public class Main extends JPanel {
 		m.draw(g);
 
 		// p.draw(g);
-		for (int i = 0; i < agents.size(); i++) {
-			agents.get(i).draw(g);
+		for (int i = 0; i < random_agents.size(); i++) {
+			random_agents.get(i).draw(g);
+		}
+		for (int i = 0; i < carrier_agents.size(); i++) {
+			carrier_agents.get(i).draw(g);
 		}
 	}
 
 	public static void init() {
 		m = new World(Constants.WORLD_SIZE, rand);
-		agents = new ArrayList<>();
+		random_agents = new ArrayList<>();
+		carrier_agents = new ArrayList<>();
 		// p = new RandomAgent(m, Constants.AGENT_RADIUS, Constants.AGENT_RANGE,
 		// Constants.MAX_NUMBER_OF_OBJECTS, rand);
-		for (int i = 0; i < Constants.NO_AGENTS; i++) {
+		for (int i = 0; i < Constants.NO_SEARCH_AGENTS; i++) {
 			RandomAgent ag = new RandomAgent(m, Constants.AGENT_RADIUS,
 					Constants.AGENT_RANGE, Constants.MAX_NUMBER_OF_OBJECTS,
 					rand);
-			agents.add(ag);
+			random_agents.add(ag);
+		}
+
+		for (int i = 0; i < Constants.NO_CARRIER_AGENTS; i++) {
+			CarrierAgent ag = new CarrierAgent(m, Constants.AGENT_RADIUS,
+					Constants.AGENT_RANGE, Constants.MAX_NUMBER_OF_OBJECTS,
+					rand);
+			carrier_agents.add(ag);
 		}
 	}
 
