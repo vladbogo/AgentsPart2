@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -7,7 +8,7 @@ public class RandomAgent extends Drawable {
 
 	public World m;
 	public Pair agentPosition;
-	public int points;
+	// public int points;
 	public int dir;
 	Random rand;
 	public int scaleFactor = 0;
@@ -15,12 +16,16 @@ public class RandomAgent extends Drawable {
 	public int maxNumberOfObjects = 0;
 	public int numberOfObjects;
 
+	HashSet<Pair> pozitii_minerale;
+
+	public boolean lock;
+
 	// int no_crumbs;
 
 	// boolean crumbs_needed = false;
 
 	public RandomAgent(World m, int r, int range, int maxNumberOfObjects,
-			Random rand) {
+			Random rand, HashSet<Pair> pozitii_minerale) {
 		// Call super constructor to init the drawable object.
 		super(m.basePosition, r, range, m.n, Constants.RANDOM_BASE_COLOR,
 				Constants.RANDOM_ARROW_COLOR, Constants.RANDOM_RANGE_COLOR);
@@ -29,11 +34,12 @@ public class RandomAgent extends Drawable {
 		int poz_j = rand.nextInt(Constants.WORLD_SIZE);
 		this.agentPosition = new Pair(poz_i, poz_j);
 		this.m = m;
-		points = 0;
 		this.rand = rand;
 		dir = Constants.LEFT;
 		this.maxNumberOfObjects = maxNumberOfObjects;
 		numberOfObjects = 0;
+		this.pozitii_minerale = pozitii_minerale;
+		lock = false;
 	}
 
 	private Pair computePoz(Pair actualPoz, int dir) {
@@ -64,36 +70,6 @@ public class RandomAgent extends Drawable {
 		return agentPosition.equals(m.basePosition);
 	}
 
-	// public Pair senseCrumbs() {
-	// Pair new_poz = null;
-	// int x[] = { 1, 1, 1, -1, -1, -1, 0, 0 };
-	// int y[] = { 0, -1, 1, 0, -1, 1, -1, 1 };
-	// if (m.isCrumb(agentPosition) > 0) {
-	// int max = 0;
-	// for (int i = 0; i < 8; i++) {
-	// Pair poz = new Pair(agentPosition.getI() + x[i],
-	// agentPosition.getJ() + y[i]);
-	// if (m.isInside(poz) && m.isCrumb(poz) > max) {
-	// max = m.isCrumb(poz);
-	// new_poz = poz;
-	// }
-	// }
-	//
-	// }
-	// if (new_poz != null) {
-	// return new_poz;
-	// }
-	// for (int i = 0; i < 8; i++) {
-	// Pair poz = new Pair(agentPosition.getI() + x[i],
-	// agentPosition.getJ() + y[i]);
-	// if (m.isInside(poz) && m.isCrumb(poz) > 0) {
-	// return poz;
-	// }
-	//
-	// }
-	// return new_poz;
-	// }
-
 	public Pair senseObjects() {
 		Pair new_poz = null;
 
@@ -114,6 +90,14 @@ public class RandomAgent extends Drawable {
 	}
 
 	public void move() {
+		if (lock && m.no_Objects(agentPosition) == 0) {
+			lock = false;
+		}
+		if (lock) {
+			setAgentPos(agentPosition);
+
+			return;
+		}
 		Pair next;
 		if (Constants.VERBOSE)
 			System.out.println("Number of objects " + numberOfObjects);
@@ -125,64 +109,43 @@ public class RandomAgent extends Drawable {
 			// crumbs_needed = false;
 		}
 		if (m.hasPile(agentPosition) && numberOfObjects != maxNumberOfObjects) {
-			m.pickUpObject(agentPosition);
-			// no_crumbs = m.no_Objects(agentPosition);
-			if (m.no_Objects(agentPosition) > 0) {
-				if (Constants.VERBOSE)
-					System.out.println("Crumb!!");
-				// crumbs_needed = true;
-				// no_crumbs += Constants.MAX_CRUMB_INTENSITY;
-			}
+			// m.pickUpObject(agentPosition);
+			pozitii_minerale.add(agentPosition);
+			System.out.println(pozitii_minerale);
+			lock = true;
 
-			numberOfObjects++;
-			isFull = true;
+			// numberOfObjects++;
+			// isFull = true;
 		}
 
-		if (numberOfObjects == maxNumberOfObjects) {
-			// TODO: Go to base.
+		if (lock) {
+			setAgentPos(agentPosition);
+		} else {
+			if ((next = senseObjects()) != null) {
+				// TODO: du-te dupa objects
 
-			if (Constants.VERBOSE)
-				System.out.println("Go to base");
-			// m.setCrumbs(agentPosition, no_crumbs);
-			// no_crumbs--;
-			Pair newPoz = nextPositionToBase();
-			if (newPoz == null) {
-				System.out.println("OOOPS");
+				if (Constants.VERBOSE)
+					System.out.println("Go objects");
+				setAgentPos(next);
 			} else {
+				// Random move.
+				if (Constants.VERBOSE)
+					System.out.println("Random move");
+				Pair actualPoz = agentPosition;
+				Pair newPoz;
+				int newDir;
+
+				while (true) {
+					newDir = rand.nextInt(8);
+					newPoz = computePoz(actualPoz, newDir);
+					if (m.isInside(newPoz))
+						break;
+				}
+
+				int val = Math.abs(dir - newDir) % 2;
+
 				setAgentPos(newPoz);
 			}
-		} else if ((next = senseObjects()) != null) {
-			// TODO: du-te dupa objects
-
-			if (Constants.VERBOSE)
-				System.out.println("Go objects");
-			setAgentPos(next);
-		}
-		// else if ((next = senseCrumbs()) != null) {
-		// if (Constants.VERBOSE)
-		// System.out.println("Go after crumbs");
-		// // TODO: du-te dupa crumbs
-		// m.decreseCrumbs(agentPosition);
-		// setAgentPos(next);
-		// }
-		else {
-			// Random move.
-			if (Constants.VERBOSE)
-				System.out.println("Random move");
-			Pair actualPoz = agentPosition;
-			Pair newPoz;
-			int newDir;
-
-			while (true) {
-				newDir = rand.nextInt(8);
-				newPoz = computePoz(actualPoz, newDir);
-				if (m.isInside(newPoz))
-					break;
-			}
-
-			int val = Math.abs(dir - newDir) % 2;
-
-			setAgentPos(newPoz);
 		}
 	}
 

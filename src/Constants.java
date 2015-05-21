@@ -49,7 +49,7 @@ public class Constants {
 	public static final int ACTION_POINTS = 1;
 
 	public static final int NO_SEARCH_AGENTS = 5;
-	public static final int NO_CARRIER_AGENTS = 5;
+	public static final int NO_CARRIER_AGENTS = 1;
 
 	// Crumbs
 	public static final int MAX_CRUMB_INTENSITY = MAX_OBJECTS_PER_PILE;

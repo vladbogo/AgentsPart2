@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 import javax.swing.*;
@@ -14,6 +15,7 @@ public class Main extends JPanel {
 
 	static ArrayList<RandomAgent> random_agents;
 	static ArrayList<CarrierAgent> carrier_agents;
+	static HashSet<Pair> pozitii_minerale;
 
 	static int time;
 
@@ -78,19 +80,20 @@ public class Main extends JPanel {
 		m = new World(Constants.WORLD_SIZE, rand);
 		random_agents = new ArrayList<>();
 		carrier_agents = new ArrayList<>();
+		pozitii_minerale = new HashSet<>();
 		// p = new RandomAgent(m, Constants.AGENT_RADIUS, Constants.AGENT_RANGE,
 		// Constants.MAX_NUMBER_OF_OBJECTS, rand);
 		for (int i = 0; i < Constants.NO_SEARCH_AGENTS; i++) {
 			RandomAgent ag = new RandomAgent(m, Constants.AGENT_RADIUS,
 					Constants.AGENT_RANGE, Constants.MAX_NUMBER_OF_OBJECTS,
-					rand);
+					rand, pozitii_minerale);
 			random_agents.add(ag);
 		}
 
 		for (int i = 0; i < Constants.NO_CARRIER_AGENTS; i++) {
 			CarrierAgent ag = new CarrierAgent(m, Constants.AGENT_RADIUS,
 					Constants.AGENT_RANGE, Constants.MAX_NUMBER_OF_OBJECTS,
-					rand);
+					rand, carrier_agents, random_agents, pozitii_minerale, i);
 			carrier_agents.add(ag);
 		}
 	}

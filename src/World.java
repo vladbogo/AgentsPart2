@@ -145,6 +145,14 @@ public class World {
 		}
 	}
 
+	public void getAllObjects(Pair poz) {
+		int numberOfObjects = world[poz.getI()][poz.getJ()];
+		if (isPile(numberOfObjects)) {
+			world[poz.getI()][poz.getJ()] = 0;
+			mapPiles.remove(poz);
+		}
+	}
+
 	/**
 	 * return the number of objects in that position
 	 */
