@@ -23,6 +23,9 @@ public class CarrierAgent extends Drawable {
 	HashSet<Pair> pozitii_minerale;
 
 	public Pair target;
+	public Pair intention;
+
+	public Pair last_mineral_position;
 
 	public CarrierAgent(World m, int r, int range, int maxNumberOfObjects,
 			Random rand, ArrayList<CarrierAgent> carrier_agents,
@@ -44,6 +47,8 @@ public class CarrierAgent extends Drawable {
 		this.indice = indice;
 		this.pozitii_minerale = pozitii_minerale;
 		target = null;
+		intention = null;
+		last_mineral_position = null;
 	}
 
 	public void setAgentPos(Pair newPoz) {
@@ -55,24 +60,34 @@ public class CarrierAgent extends Drawable {
 		if (target == null) {
 			computePozitiiMinerale();
 		}
+		if (intention == null) {
+			intention = last_mineral_position;
+		}
 
 		if (target != null && agentPosition.equals(target)
 				&& !target.equals(m.basePosition)) {
 			numberOfObjects += m.no_Objects(agentPosition);
 			isFull = true;
+			last_mineral_position = agentPosition;
 			System.out.println("Am adunat " + numberOfObjects);
 			m.getAllObjects(agentPosition);
-			target = m.basePosition;
+			// target = m.basePosition;
+			intention = m.basePosition;
+			target = null;
 		}
 		if (agentPosition.equals(m.basePosition)
-				&& m.basePosition.equals(target)) {
+				&& m.basePosition.equals(intention)) {
 			System.out.println("Am lasat obiectele");
 			numberOfObjects = 0;
 			isFull = false;
-			target = null;
+			// target = null;
+			intention = null;
 		}
 		if (target != null && !agentPosition.equals(target)) {
-			Pair next = nextPositionToTarget();
+			Pair next = nextPositionToTarget(target);
+			setAgentPos(next);
+		} else if (target == null && intention != null) {
+			Pair next = nextPositionToTarget(intention);
 			setAgentPos(next);
 		} else {
 			setAgentPos(agentPosition);
@@ -111,9 +126,9 @@ public class CarrierAgent extends Drawable {
 		}
 	}
 
-	public Pair nextPositionToTarget() {
+	public Pair nextPositionToTarget(Pair target) {
 		if (agentPosition.equals(target)) {
-			return null;
+			return agentPosition;
 		}
 		LinkedList<Pair> queue = new LinkedList<>();
 		queue.add(agentPosition);
