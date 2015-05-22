@@ -234,8 +234,10 @@ public class World {
 			int scaledI = i * scale;
 			for (int j = 0; j < n; j++) {
 				int scaledJ = j * scale;
-				g2d.setColor(Constants.EMPTY_SPACE_COLOR);
-				g2d.drawRect(scaledI, scaledJ, scale, scale);
+				if (Constants.SHOW_GRID) {
+					g2d.setColor(Constants.EMPTY_SPACE_COLOR);
+					g2d.drawRect(scaledI, scaledJ, scale, scale);
+				}
 				if (world[i][j] == Constants.OBSTACLE) {
 					g2d.setColor(Constants.OBSTACLE_COLOR);
 					g2d.fillOval(scaledI, scaledJ, scale, scale);
