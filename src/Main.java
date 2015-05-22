@@ -141,7 +141,8 @@ public class Main extends JPanel {
 					rand, carrier_agents, random_agents, pozitii_minerale, i);
 			carrier_agents.add(ag);
 		}
-		makeCarrierSpread();
+		if (Constants.CARRIER_SPREAD)
+			makeCarrierSpread();
 	}
 
 	public static void pause(int time) {

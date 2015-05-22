@@ -64,8 +64,8 @@ public class CarrierAgent extends Drawable {
 		if (intention == null) {
 			if (Constants.VERBOSE)
 				System.out.println("Carrier intoarcere la ultima minerala");
-
-			intention = last_mineral_position;
+			if (Constants.CARRIER_RETURN_LAST_PILE)
+				intention = last_mineral_position;
 		}
 
 		if (target != null && agentPosition.equals(target)
