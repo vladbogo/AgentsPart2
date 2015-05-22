@@ -33,6 +33,37 @@ public class Main extends JPanel {
 		return true;
 	}
 
+	public static void makeCarrierSpread() {
+		// se duc pe verticala
+		int first_half = carrier_agents.size() / 2;
+		// se duc pe orizontala
+		int second_half = carrier_agents.size() - first_half;
+
+		int pasi_verticala = Constants.WORLD_SIZE / first_half;
+		int pasi_orizontala = Constants.WORLD_SIZE / second_half;
+
+		int pas_curent = 0;
+		// verticala
+		for (int i = 0; i < first_half; i++) {
+			int poz_j = m.basePosition.getJ();
+			int poz_i = pas_curent;
+			pas_curent += pasi_verticala;
+			Pair poz = new Pair(poz_i, poz_j);
+			if (m.isInside(poz))
+				carrier_agents.get(i).intention = poz;
+		}
+		pas_curent = 0;
+		for (int i = first_half; i < carrier_agents.size(); i++) {
+			int poz_i = m.basePosition.getI();
+			int poz_j = pas_curent;
+			pas_curent += pasi_orizontala;
+			Pair poz = new Pair(poz_i, poz_j);
+			if (m.isInside(poz)) {
+				carrier_agents.get(i).intention = poz;
+			}
+		}
+	}
+
 	public Main() {
 		Thread animationThread = new Thread() {
 			@Override
@@ -101,6 +132,7 @@ public class Main extends JPanel {
 					rand, carrier_agents, random_agents, pozitii_minerale, i);
 			carrier_agents.add(ag);
 		}
+		makeCarrierSpread();
 	}
 
 	public static void pause(int time) {

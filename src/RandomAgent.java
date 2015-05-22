@@ -32,7 +32,7 @@ public class RandomAgent extends Drawable {
 		// TODO random generate position.
 		int poz_i = rand.nextInt(Constants.WORLD_SIZE);
 		int poz_j = rand.nextInt(Constants.WORLD_SIZE);
-		this.agentPosition = new Pair(poz_i, poz_j);
+		this.agentPosition = m.basePosition;
 		this.m = m;
 		this.rand = rand;
 		dir = Constants.LEFT;
