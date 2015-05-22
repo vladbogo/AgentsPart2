@@ -58,7 +58,8 @@ public class CarrierAgent extends Drawable {
 
 		if (target != null && agentPosition.equals(target)
 				&& !target.equals(m.basePosition)) {
-			numberOfObjects = m.no_Objects(agentPosition);
+			numberOfObjects += m.no_Objects(agentPosition);
+			isFull = true;
 			System.out.println("Am adunat " + numberOfObjects);
 			m.getAllObjects(agentPosition);
 			target = m.basePosition;
@@ -67,6 +68,7 @@ public class CarrierAgent extends Drawable {
 				&& m.basePosition.equals(target)) {
 			System.out.println("Am lasat obiectele");
 			numberOfObjects = 0;
+			isFull = false;
 			target = null;
 		}
 		if (target != null && !agentPosition.equals(target)) {

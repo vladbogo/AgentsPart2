@@ -25,6 +25,11 @@ public class Main extends JPanel {
 				return false;
 			}
 		}
+		for (int i = 0; i < carrier_agents.size(); i++) {
+			if (carrier_agents.get(i).numberOfObjects > 0) {
+				return false;
+			}
+		}
 		return true;
 	}
 
