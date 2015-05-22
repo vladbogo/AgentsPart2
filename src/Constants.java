@@ -56,9 +56,9 @@ public class Constants {
 
 	public static final boolean VERBOSE = false;
 
-	public static final boolean RANDOM_MOVE_CARRIER = false;
+	public static final boolean RANDOM_MOVE_CARRIER = true;
 
-	public static final boolean CARRIER_SPREAD = false;
+	public static final boolean CARRIER_SPREAD = true;
 
-	public static final boolean CARRIER_RETURN_LAST_PILE = false;
+	public static final boolean CARRIER_RETURN_LAST_PILE = true;
 }
