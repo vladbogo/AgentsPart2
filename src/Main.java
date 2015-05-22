@@ -9,7 +9,6 @@ import javax.swing.*;
 public class Main extends JPanel {
 
 	// agent
-	// public static RandomAgent p;
 	public static World m;
 	public static Random rand;
 
@@ -39,13 +38,18 @@ public class Main extends JPanel {
 		// se duc pe orizontala
 		int second_half = carrier_agents.size() - first_half;
 		int pasi_verticala, pasi_orizontala;
-		if (first_half != 0)
+		if (first_half != 0) {
 			pasi_verticala = Constants.WORLD_SIZE / first_half;
-		else
+			if (pasi_verticala == 0)
+				pasi_verticala = 1;
+		} else
 			pasi_verticala = 0;
-		if (second_half != 0)
+		if (second_half != 0) {
 			pasi_orizontala = Constants.WORLD_SIZE / second_half;
-		else
+			if (pasi_orizontala == 0) {
+				pasi_orizontala = 1;
+			}
+		} else
 			pasi_orizontala = 0;
 
 		int pas_curent = 0;
@@ -89,9 +93,8 @@ public class Main extends JPanel {
 					pause(Constants.SLEEP);
 
 				}
-				if (!(m.areMoreMinerals() || !allAgentsEmpty())) {
-					System.out.println("time " + time);
-				}
+
+				System.out.println("time " + time);
 
 			};
 		};

@@ -49,6 +49,7 @@ public class CarrierAgent extends Drawable {
 		target = null;
 		intention = null;
 		last_mineral_position = null;
+		isFull = false;
 	}
 
 	public void setAgentPos(Pair newPoz) {
@@ -70,7 +71,8 @@ public class CarrierAgent extends Drawable {
 		if (target != null && agentPosition.equals(target)
 				&& !target.equals(m.basePosition)) {
 			numberOfObjects += m.no_Objects(agentPosition);
-			isFull = true;
+			if (numberOfObjects > 0)
+				isFull = true;
 			last_mineral_position = agentPosition;
 			if (Constants.VERBOSE)
 				System.out.println("Am " + numberOfObjects + " obiecte");
@@ -80,7 +82,7 @@ public class CarrierAgent extends Drawable {
 			target = null;
 		}
 		if (agentPosition.equals(m.basePosition)
-				&& m.basePosition.equals(intention)) {
+				&& m.basePosition.equals(intention) && numberOfObjects > 0) {
 			System.out.println("Agentul " + indice + " a lasat "
 					+ numberOfObjects);
 			numberOfObjects = 0;
