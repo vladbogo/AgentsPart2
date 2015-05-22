@@ -38,9 +38,15 @@ public class Main extends JPanel {
 		int first_half = carrier_agents.size() / 2;
 		// se duc pe orizontala
 		int second_half = carrier_agents.size() - first_half;
-
-		int pasi_verticala = Constants.WORLD_SIZE / first_half;
-		int pasi_orizontala = Constants.WORLD_SIZE / second_half;
+		int pasi_verticala, pasi_orizontala;
+		if (first_half != 0)
+			pasi_verticala = Constants.WORLD_SIZE / first_half;
+		else
+			pasi_verticala = 0;
+		if (second_half != 0)
+			pasi_orizontala = Constants.WORLD_SIZE / second_half;
+		else
+			pasi_orizontala = 0;
 
 		int pas_curent = 0;
 		// verticala
