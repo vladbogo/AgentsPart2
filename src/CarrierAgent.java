@@ -61,6 +61,9 @@ public class CarrierAgent extends Drawable {
 			computePozitiiMinerale();
 		}
 		if (intention == null) {
+			if (Constants.VERBOSE)
+				System.out.println("Carrier intoarcere la ultima minerala");
+
 			intention = last_mineral_position;
 		}
 
@@ -69,7 +72,8 @@ public class CarrierAgent extends Drawable {
 			numberOfObjects += m.no_Objects(agentPosition);
 			isFull = true;
 			last_mineral_position = agentPosition;
-			System.out.println("Am adunat " + numberOfObjects);
+			if (Constants.VERBOSE)
+				System.out.println("Am " + numberOfObjects + " obiecte");
 			m.getAllObjects(agentPosition);
 			// target = m.basePosition;
 			intention = m.basePosition;
@@ -77,10 +81,14 @@ public class CarrierAgent extends Drawable {
 		}
 		if (agentPosition.equals(m.basePosition)
 				&& m.basePosition.equals(intention)) {
-			System.out.println("Am lasat obiectele");
+			System.out.println("Agentul " + indice + " a lasat "
+					+ numberOfObjects);
 			numberOfObjects = 0;
 			isFull = false;
 			// target = null;
+			intention = null;
+		}
+		if (agentPosition.equals(intention)) {
 			intention = null;
 		}
 		if (target != null && !agentPosition.equals(target)) {
@@ -93,8 +101,50 @@ public class CarrierAgent extends Drawable {
 			}
 			setAgentPos(next);
 		} else {
-			setAgentPos(agentPosition);
+			if (Constants.RANDOM_MOVE_CARRIER) {
+				// Random move.
+				if (Constants.VERBOSE)
+					System.out.println("Carrier Random move");
+				Pair actualPoz = agentPosition;
+				Pair newPoz;
+				int newDir;
+
+				while (true) {
+					newDir = rand.nextInt(8);
+					newPoz = computePoz(actualPoz, newDir);
+					if (m.isInside(newPoz))
+						break;
+				}
+
+				setAgentPos(newPoz);
+			} else {
+				setAgentPos(agentPosition);
+			}
 		}
+	}
+
+	private Pair computePoz(Pair actualPoz, int dir) {
+		Pair p = null;
+
+		if (dir == Constants.UP) {
+			p = new Pair(actualPoz.getI() - 1, actualPoz.getJ());
+		} else if (dir == Constants.DOWN) {
+			p = new Pair(actualPoz.getI() + 1, actualPoz.getJ());
+		} else if (dir == Constants.LEFT) {
+			p = new Pair(actualPoz.getI(), actualPoz.getJ() - 1);
+		} else if (dir == Constants.RIGHT) {
+			p = new Pair(actualPoz.getI(), actualPoz.getJ() + 1);
+		} else if (dir == Constants.UPPER_LEFT) {
+			p = new Pair(actualPoz.getI() - 1, actualPoz.getJ() - 1);
+		} else if (dir == Constants.UPPER_RIGHT) {
+			p = new Pair(actualPoz.getI() - 1, actualPoz.getJ() + 1);
+		} else if (dir == Constants.DOWNER_LEFT) {
+			p = new Pair(actualPoz.getI() + 1, actualPoz.getJ() - 1);
+		} else if (dir == Constants.DOWNER_RIGHT) {
+			p = new Pair(actualPoz.getI() + 1, actualPoz.getJ() + 1);
+		}
+
+		return p;
 	}
 
 	public int getDistance(Pair poz1, Pair poz2) {
@@ -120,7 +170,9 @@ public class CarrierAgent extends Drawable {
 			}
 			if (indice == this.indice) {
 				target = poz_mineral;
-				System.out.println("setat target!! " + indice + " " + target);
+				if (Constants.VERBOSE)
+					System.out.println("setat target!! " + indice + " "
+							+ target);
 				if (!pozitii_minerale.remove(poz_mineral))
 					System.out.println(":(((");
 				;

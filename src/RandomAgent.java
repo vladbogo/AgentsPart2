@@ -109,13 +109,10 @@ public class RandomAgent extends Drawable {
 			// crumbs_needed = false;
 		}
 		if (m.hasPile(agentPosition) && numberOfObjects != maxNumberOfObjects) {
-			// m.pickUpObject(agentPosition);
-			pozitii_minerale.add(agentPosition);
-			System.out.println(pozitii_minerale);
-			lock = true;
-
-			// numberOfObjects++;
-			// isFull = true;
+			if (!pozitii_minerale.contains(agentPosition)) {
+				pozitii_minerale.add(agentPosition);
+				lock = true;
+			}
 		}
 
 		if (lock) {
@@ -141,8 +138,6 @@ public class RandomAgent extends Drawable {
 					if (m.isInside(newPoz))
 						break;
 				}
-
-				int val = Math.abs(dir - newDir) % 2;
 
 				setAgentPos(newPoz);
 			}
